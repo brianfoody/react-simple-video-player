@@ -1,45 +1,18 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import glamorous from 'glamorous';
-import SizedPlayer from './SizedPlayer';
-import PlayIcon from './icons/PlayIcon';
-import PauseIcon from './icons/PauseIcon';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import glamorous from "glamorous";
+import SizedPlayer from "./SizedPlayer";
 
-const Player = glamorous.div({
-  position: 'relative',
-  lineHeight: 0,
-  display: 'inline-block'
-}, ({ autosize }) => {
-  if (autosize) return { width: '100%', height: '100%' };
-});
-
-const overlayStyles = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  width: '100%',
-  height: '100%'
-};
-
-const Overlay = glamorous.div(overlayStyles, {
-  backgroundColor: 'rgba(0, 0, 0, .5)',
-  opacity: 0,
-  transition: 'all 450ms cubic-bezier(.23, 1, .32, 1) 0ms',
-  cursor: 'pointer'
-}, ({ shown }) => {
-  if (shown) return { opacity: 1 };
-});
-
-const InnerOverlay = glamorous.div(overlayStyles);
-
-const PlayButton = glamorous.div({
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 72,
-  height: 72
-});
+const Player = glamorous.div(
+  {
+    position: "relative",
+    lineHeight: 0,
+    display: "inline-block"
+  },
+  ({ autosize }) => {
+    if (autosize) return { width: "100%", height: "100%" };
+  }
+);
 
 export default class VideoPlayer extends PureComponent {
   static propTypes = {
@@ -92,22 +65,9 @@ export default class VideoPlayer extends PureComponent {
     const playing = this.state.playing;
     const autosize = this.props.autosize;
     return (
-      <Player
-        autosize={autosize}
-        onMouseOver={this.onMouseOver}
-        onMouseLeave={this.onMouseLeave}
-      >
+      <Player autosize={autosize}>
         <SizedPlayer playing={playing} {...this.props} />
-        <Overlay
-          shown={this.state.overlayShown}
-          onClick={playing ? this.onPause : this.onPlay}
-        >
-          <PlayButton>
-            {playing ? <PauseIcon /> : <PlayIcon />}
-          </PlayButton>
-          <InnerOverlay />
-        </Overlay>
       </Player>
     );
-  }
+  };
 }
